@@ -33,43 +33,9 @@ PART 2:
 
 #define MAX_LINES 1001
 
-void bubbleSort(int arr[], int n) {
-  int i, j, temp;
-
-  for (i = 0; i < n - 1; i++) {
-    for (j = 0; j < n - i - 1; j++) {
-      if (arr[j] > arr[j + 1]) {
-        temp = arr[j];
-        arr[j] = arr[j + 1];
-        arr[j + 1] = temp;
-      }
-    }
-  }
-}
-
+void bubbleSort(int arr[], int n);
 void readData(const char *filename, int locationsA[], int locationsB[],
-              int *size) {
-  FILE *file;
-  int index = 0;
-
-  file = fopen("data.txt", "r");
-  if (file == NULL) {
-    perror("Error opening file");
-    return;
-  }
-
-  while (fscanf(file, "%d %d", &locationsA[index], &locationsB[index]) == 2) {
-    index++;
-    if (index >= MAX_LINES) {
-      fprintf(stderr, "Error: Too many lines in file (max %d).\n", MAX_LINES);
-      fclose(file);
-      return;
-    }
-  }
-
-  fclose(file);
-  *size = index;
-}
+              int *size);
 
 int main() {
   int locationsA[MAX_LINES], locationsB[MAX_LINES];
@@ -118,4 +84,42 @@ int main() {
   // Result: 21328497
 
   return 0;
+}
+
+void bubbleSort(int arr[], int n) {
+  int i, j, temp;
+
+  for (i = 0; i < n - 1; i++) {
+    for (j = 0; j < n - i - 1; j++) {
+      if (arr[j] > arr[j + 1]) {
+        temp = arr[j];
+        arr[j] = arr[j + 1];
+        arr[j + 1] = temp;
+      }
+    }
+  }
+}
+
+void readData(const char *filename, int locationsA[], int locationsB[],
+              int *size) {
+  FILE *file;
+  int index = 0;
+
+  file = fopen("data.txt", "r");
+  if (file == NULL) {
+    perror("Error opening file");
+    return;
+  }
+
+  while (fscanf(file, "%d %d", &locationsA[index], &locationsB[index]) == 2) {
+    index++;
+    if (index >= MAX_LINES) {
+      fprintf(stderr, "Error: Too many lines in file (max %d).\n", MAX_LINES);
+      fclose(file);
+      return;
+    }
+  }
+
+  fclose(file);
+  *size = index;
 }
