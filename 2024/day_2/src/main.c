@@ -4,8 +4,10 @@
 
 void print_nested_array(nestedarray a);
 int part_one(nestedarray data);
+int part_two(nestedarray data);
 int check_if_uniform(array a);
 int check_diff(array a);
+array copy_exclude(array a, int exclude_index);
 
 int main(void) {
   FILE *fp = fopen("/home/alex/Code/advent_of_code/2024/day_2/data.txt", "r");
@@ -23,6 +25,9 @@ int main(void) {
   // print_nested_array(data);
   int p1_result = part_one(data);
   printf("result for part 1: %d\n", p1_result);
+
+  int p2_result = part_two(data);
+  printf("result for part 2: %d\n", p2_result);
 
   free_nested_array(data);
   return 0;
@@ -51,6 +56,30 @@ int part_one(nestedarray data) {
   return count;
 }
 
+// Brute force lol
+int part_two(nestedarray data) {
+  int count = 0;
+  array check_again_array;
+  for (int i = 0; i < data.len; i++) {
+    if (check_if_uniform(data.items[i]) && check_diff(data.items[i])) {
+      count++;
+    } else {
+      // Check every combination of array.....
+      // Got stuck on logic checks I could do in check_if_uniform
+      for (int j = 0; j < data.items[i].len; j++) {
+        check_again_array = copy_exclude(data.items[i], j);
+        if (check_if_uniform(check_again_array) &&
+            check_diff(check_again_array)) {
+          count++;
+          break;
+        }
+      }
+    }
+  }
+
+  return count;
+}
+
 // Check if all values are increasing or decreasing
 int check_if_uniform(array a) {
   // First see if pattern is increasing or decreasing
@@ -72,11 +101,8 @@ int check_if_uniform(array a) {
 
   for (int i = 0; i < a.len - 1; i++) {
     diff = a.items[i] - a.items[i + 1];
-    if (uniform_trend == 'd' && diff < 0) {
-      return 0;
-    }
-
-    if (uniform_trend == 'i' && diff > 0) {
+    if ((uniform_trend == 'd' && diff < 0) ||
+        (uniform_trend == 'i' && diff > 0)) {
       return 0;
     }
   }
@@ -85,7 +111,7 @@ int check_if_uniform(array a) {
 }
 
 // Check each adjacent element to make sure they differ
-// by at least one and at most three
+// by at least one and at most three.
 int check_diff(array a) {
   int diff;
 
@@ -98,4 +124,23 @@ int check_diff(array a) {
   }
 
   return 1;
+}
+
+array copy_exclude(array a, int exclude_index) {
+  array new_array = {
+      .capacity = a.capacity,
+      .len = a.len - 1,
+  };
+
+  int new_items[a.len - 1];
+  int new_items_index = 0;
+  for (int i = 0; i < a.len; i++) {
+    if (i != exclude_index) {
+      new_items[new_items_index++] = a.items[i];
+    }
+  }
+
+  new_array.items = new_items;
+
+  return new_array;
 }
