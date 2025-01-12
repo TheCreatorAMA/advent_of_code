@@ -10,7 +10,7 @@ int check_diff(array a);
 array copy_exclude(array a, int exclude_index);
 
 int main(void) {
-  FILE *fp = fopen("/home/alex/Code/advent_of_code/2024/day_2/data.txt", "r");
+  FILE *fp = fopen("./data.txt", "r");
   if (fp == NULL) {
     printf("error opening data file\n");
     return 1;

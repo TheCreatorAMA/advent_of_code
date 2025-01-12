@@ -21,7 +21,7 @@ void freeArray(IntArray *arr);
 int main(void) {
   const int INIT_ARR_SIZE = 5;
 
-  FILE *file = fopen("data.txt", "r");
+  FILE *file = fopen("./data.txt", "r");
   if (file == NULL) {
     perror("Error opening file");
     return 1;
