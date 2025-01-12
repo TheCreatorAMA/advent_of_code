@@ -8,7 +8,13 @@ typedef struct {
   int *items; // NOTE: This is a void pointer, it really is just
 } IntArray;   // memory location but we dont know whats there.
 
-IntArray *createDynamicArray(int initialCapacity);
+typedef struct {
+  size_t length;
+  size_t capacity;
+  void *items;
+} NestedArray;
+
+IntArray *createDynamicIntArray(int initialCapacity);
 void append(IntArray *arr, int value);
 void freeArray(IntArray *arr);
 
@@ -28,7 +34,7 @@ int main(void) {
       fgets(buffer, sizeof(buffer), file) !=
       NULL) { // NTOE: fgets() returns NULL when the end of the file is reached
 
-    IntArray *arr = createDynamicArray(INIT_ARR_SIZE);
+    IntArray *arr = createDynamicIntArray(INIT_ARR_SIZE);
     char *token;
     int cur_num;
 
@@ -57,7 +63,7 @@ int main(void) {
   return 0;
 }
 
-IntArray *createDynamicArray(int initialCapacity) {
+IntArray *createDynamicIntArray(int initialCapacity) {
   IntArray *arr = (IntArray *)malloc(sizeof(IntArray));
   if (arr == NULL) {
     printf("Memory allocation failed\n");
